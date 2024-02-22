@@ -12,6 +12,7 @@ import {
   UseFilters,
   ParseIntPipe,
   UsePipes,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateCatDto, UpdateCatDto, ListAllEntities } from './dto';
 import { CatsService } from './cats.service';
@@ -19,8 +20,12 @@ import { Cat } from './interfaces/cat.interface';
 import { HttpExceptionFilter } from 'src/core/filter/http-exception/http-exception.filter';
 import { ZodValidationPipe, createCatSchema } from 'src/zod-validation/zod-validation.pipe';
 import { ValidationPipe } from 'src/validation/validation.pipe';
+import { RolesGuard } from 'src/roles/roles.guard';
+import { Roles } from 'src/roles/roles.decorator';
 
 @Controller('cats')
+@UseGuards(RolesGuard)
+@Roles(['admin'])
 export class CatsController {
   constructor(private catsService: CatsService) {}
 
