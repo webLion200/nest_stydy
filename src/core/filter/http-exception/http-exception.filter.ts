@@ -15,7 +15,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     let exceptionResErrMsg = ""
     const exceptionRes:any = exception.getResponse()
     if(exceptionRes?.message) {
-      exceptionResErrMsg = exceptionRes?.message.join(',')
+      exceptionResErrMsg = typeof exceptionRes?.message == 'string' ? exceptionRes?.message : exceptionRes?.message.join(',')
     }
 
     // 设置错误信息
