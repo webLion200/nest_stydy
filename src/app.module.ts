@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PostsModule } from './posts/posts.module';
@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService, ConfigModule } from '@nestjs/config';
 import envConfig from '../config/env';
 import { PostsEntity } from './posts/posts.entity';
+import { LoggerMiddleware } from './core/middleware/logger.middleware';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { PostsEntity } from './posts/posts.entity';
         password: configService.get('DB_PASSWORD', '123456'), // 密码
         database: configService.get('DB_DATABASE', 'blog'), //数据库名
         timezone: '+08:00', //服务器上配置的时区
-        synchronize: true, //根据实体自动创建数据库表， 生产环境建议关闭
+        synchronize: false, //根据实体自动创建数据库表， 生产环境建议关闭
       }),
     }),
     PostsModule,
@@ -34,4 +35,10 @@ import { PostsEntity } from './posts/posts.entity';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+    .apply(LoggerMiddleware)
+    .forRoutes('app');
+  }
+}
