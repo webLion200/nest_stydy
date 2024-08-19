@@ -1,5 +1,5 @@
 //    posts/posts.entity.ts
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('posts')
 export class PostsEntity {
