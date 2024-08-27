@@ -19,8 +19,6 @@ export class AppController {
 
   @Put('list/:id')
   update() {
-    return "update";
+    return 'update';
   }
-
-  
 }

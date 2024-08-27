@@ -10,6 +10,7 @@ import { PostsEntity } from './posts/posts.entity';
 import { LoggerMiddleware } from './core/middleware/logger.middleware';
 import { UserModule } from './user/user.module';
 import { UserEntity } from './user/entities/user.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -34,14 +35,13 @@ import { UserEntity } from './user/entities/user.entity';
     }),
     PostsModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-    .apply(LoggerMiddleware)
-    .forRoutes('app');
+    consumer.apply(LoggerMiddleware).forRoutes('app');
   }
 }
